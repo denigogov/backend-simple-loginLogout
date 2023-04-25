@@ -6,20 +6,24 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
-let login = false;
+const port = process.env.PORT ?? 4000;
+
+let login = {
+  loggedin: false,
+};
 
 app.get("/", (req: Request, res: Response) => {
-  res.send(login ? "I'm login" : "I'm logout");
+  res.status(200).json(login);
 });
 
 app.post("/logout", (req: Request, res: Response) => {
-  res.send(login);
+  login.loggedin = false;
+  res.sendStatus(200);
 });
 
 app.post("/login", (req: Request, res: Response) => {
-  login = true;
-  res.send(login);
+  login.loggedin = true;
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {
